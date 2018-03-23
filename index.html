@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="script/plugins/paper/dist/paper-full.js"></script>
+  <title>Trial</title>
+  <style>
+    body, html{
+      width:100%;
+      height:100%;
+      margin: 0;
+      background: #333;
+    }
+    
+    #myCanvas{
+      width:100%;
+      height:100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+</body>
+<script src="script/plugins/paper/dist/paper-full.min.js"></script>
+<script src="script/plugins/howler.js"></script>
+<script type="text/paperscript" canvas="myCanvas">
+  
+  var ww = window.innerWidth; 
+  var wh = window.innerHeight; 
+  
+  var circles = []; 
+  var sounds = []; 
+  
+  for(var i=1; i<=27; i++){
+    sounds.push(new Howl({src: ['sounds/s_'+i+'.mp3']}));
+  }
+  
+  function onKeyDown(event){
+    var p = new Point(Math.random() * ww, Math.random() * wh); 
+    var c = new Path.Circle(p, 100); 
+    var r = Math.floor(Math.random() * 255); 
+    var g = Math.floor(Math.random() * 255); 
+    var b = Math.floor(Math.random() * 255); 
+    c.fillColor = 'rgba('+r+', '+g+', '+b+', 1)';
+    circles.push(c); 
+    
+    sounds[event.event.keyCode - 97].play(); 
+  }
+  
+  function onFrame(event){
+    for(var i=0; i<circles.length; i++){
+      circles[i].scaling.x -= 0.07;
+      circles[i].scaling.y -= 0.07;
+      circles[i].fillColor.hue += 1;
+    }
+  }
+  
+</script>
+</html>
